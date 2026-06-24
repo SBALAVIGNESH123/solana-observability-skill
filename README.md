@@ -188,20 +188,6 @@ Once installed, ask your AI agent:
 
 ---
 
-## Key Differentiators
-
-| Feature | This Skill | Others in Ecosystem |
-|---------|-----------|-------------------|
-| Skill files | **12 progressive** | 1-3 typical |
-| Geyser gRPC | ✅ Full Yellowstone + failover | ❌ Not covered |
-| Security monitoring | ✅ Authority + drain + flash loan | Partial (audit only) |
-| SLO burn rates | ✅ Multi-window (Google SRE) | ❌ Not covered |
-| Cost optimization | ✅ CU profiler + dynamic fees | ❌ Not covered |
-| Chaos testing | ✅ Full framework + CI/CD | ❌ Not covered |
-| Agents | 3 specialized | 0-1 typical |
-| Commands | 3 workflow commands | 0 typical |
-
----
 
 ## Progressive Loading
 
