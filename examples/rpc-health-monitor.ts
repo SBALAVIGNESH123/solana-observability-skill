@@ -1,5 +1,5 @@
 /**
- * Solana Observability Skill — Quick Start Example
+ * Solana Observability Skill -- Quick Start Example
  * 
  * This example sets up basic RPC health monitoring with automatic failover
  * and Prometheus metrics export for a Solana application.

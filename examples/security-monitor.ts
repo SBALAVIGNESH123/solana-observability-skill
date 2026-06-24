@@ -1,5 +1,5 @@
 /**
- * Solana Observability Skill — Security Monitor Example
+ * Solana Observability Skill -- Security Monitor Example
  *
  * Real-time detection of authority changes, large drains, and
  * suspicious patterns on Solana programs.
@@ -194,7 +194,7 @@ async function main() {
   );
 
   await monitor.start();
-  console.log('Security monitor active — watching for authority changes...');
+  console.log('Security monitor active -- watching for authority changes...');
 
   process.on('SIGTERM', async () => {
     await monitor.shutdown();

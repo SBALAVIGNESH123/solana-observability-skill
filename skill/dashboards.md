@@ -1,4 +1,4 @@
-# Grafana Dashboards — Dashboard-as-Code with Terraform
+# Grafana Dashboards -- Dashboard-as-Code with Terraform
 
 Pre-built Grafana dashboards for Solana observability with provisioning automation.
 

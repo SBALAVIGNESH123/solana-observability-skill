@@ -1,4 +1,4 @@
-# Transaction Metrics — Landing Rate, MEV, and Jito Bundles
+# Transaction Metrics -- Landing Rate, MEV, and Jito Bundles
 
 Complete transaction lifecycle monitoring including Jito bundle tracking, MEV detection, and landing rate optimization.
 
@@ -6,31 +6,31 @@ Complete transaction lifecycle monitoring including Jito bundle tracking, MEV de
 
 ```
 User submits TX
-      │
-      ▼
-┌─────────────────┐
-│ RPC receives TX  │ ← Measure: submission latency
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Leader schedules │ ← Measure: queue time (slot-aware)
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ TX executes      │ ← Measure: CU used, success/fail
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Confirmed        │ ← Measure: confirmation latency
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Finalized        │ ← Measure: finality time
-└─────────────────┘
+      |
+      v
++-----------------+
+| RPC receives TX  | <- Measure: submission latency
++--------+--------+
+         |
+         v
++-----------------+
+| Leader schedules | <- Measure: queue time (slot-aware)
++--------+--------+
+         |
+         v
++-----------------+
+| TX executes      | <- Measure: CU used, success/fail
++--------+--------+
+         |
+         v
++-----------------+
+| Confirmed        | <- Measure: confirmation latency
++--------+--------+
+         |
+         v
++-----------------+
+| Finalized        | <- Measure: finality time
++-----------------+
 ```
 
 ## Landing Rate Tracker
@@ -154,7 +154,7 @@ export class LandingRateTracker {
           }
         }
       } catch (err) {
-        // Rate limited or network error — retry next cycle
+        // Rate limited or network error -- retry next cycle
       }
     }
 
@@ -269,7 +269,7 @@ export function classifyTxError(err: any): { type: TxErrorType; retryable: boole
     return { type: TxErrorType.ACCOUNT_IN_USE, retryable: true, message: 'Account locked by another transaction' };
   }
   if (msg.includes('BlockhashNotFound') || msg.includes('blockhash not found')) {
-    return { type: TxErrorType.BLOCKHASH_NOT_FOUND, retryable: true, message: 'Blockhash expired — refresh and retry' };
+    return { type: TxErrorType.BLOCKHASH_NOT_FOUND, retryable: true, message: 'Blockhash expired -- refresh and retry' };
   }
   if (msg.includes('InstructionError')) {
     return { type: TxErrorType.PROGRAM_ERROR, retryable: false, message: 'Program execution error' };
@@ -282,7 +282,7 @@ export function classifyTxError(err: any): { type: TxErrorType; retryable: boole
 }
 ```
 
-## PromQL Recipes — Transaction Metrics
+## PromQL Recipes -- Transaction Metrics
 
 ```promql
 # Landing rate (5-minute window)

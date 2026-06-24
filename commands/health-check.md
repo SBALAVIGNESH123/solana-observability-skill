@@ -10,12 +10,12 @@ Run a comprehensive health check on Solana observability infrastructure.
 
 ## What It Checks
 
-1. **RPC Connectivity** — Can we reach the configured RPC endpoint?
-2. **Slot Freshness** — Is the RPC within 10 slots of the cluster tip?
-3. **Transaction Landing** — Submit a dummy memo tx and verify it lands
-4. **Prometheus Scrape** — Is the metrics endpoint responding?
-5. **Grafana Access** — Can we reach the Grafana API?
-6. **Alert Rules** — Are Prometheus alert rules loaded?
+1. **RPC Connectivity** -- Can we reach the configured RPC endpoint?
+2. **Slot Freshness** -- Is the RPC within 10 slots of the cluster tip?
+3. **Transaction Landing** -- Submit a dummy memo tx and verify it lands
+4. **Prometheus Scrape** -- Is the metrics endpoint responding?
+5. **Grafana Access** -- Can we reach the Grafana API?
+6. **Alert Rules** -- Are Prometheus alert rules loaded?
 
 ## Output Format
 

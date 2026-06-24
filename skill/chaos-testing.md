@@ -1,4 +1,4 @@
-# Chaos Testing — Resilience Engineering for Solana Infrastructure
+# Chaos Testing -- Resilience Engineering for Solana Infrastructure
 
 Systematic chaos engineering to validate your observability stack under failure conditions. Ensures alerts fire, dashboards show correct data, and runbooks work before real incidents happen.
 
@@ -95,7 +95,7 @@ export class ChaosRunner {
     result: { chaos: ChaosResult; verification: VerificationResult }
   ): void {
     console.log(`\n📊 Chaos Report: ${experiment.name}`);
-    console.log('─'.repeat(50));
+    console.log('-'.repeat(50));
     console.log(`Chaos executed: ${result.chaos.success ? '✅' : '❌'}`);
     console.log(`Alerts fired: ${result.verification.alertsFired.join(', ') || 'none'}`);
     console.log(`Alerts MISSED: ${result.verification.alertsMissed.join(', ') || 'none ✅'}`);
@@ -103,7 +103,7 @@ export class ChaosRunner {
     console.log(`Runbook triggered: ${result.verification.runbookTriggered ? '✅' : '❌'}`);
 
     if (result.verification.alertsMissed.length > 0) {
-      console.log('\n⚠️  GAPS FOUND — fix these before production:');
+      console.log('\n⚠️  GAPS FOUND -- fix these before production:');
       for (const alert of result.verification.alertsMissed) {
         console.log(`   - Missing alert: ${alert}`);
       }
@@ -212,7 +212,7 @@ function createGeyserInterruptionExperiment(
     },
 
     async rollback() {
-      // Observer auto-reconnects — just verify it recovered
+      // Observer auto-reconnects -- just verify it recovered
       await new Promise(resolve => setTimeout(resolve, 5000));
     },
   };
@@ -269,7 +269,7 @@ function createSecurityAlertExperiment(
     },
 
     async rollback() {
-      // No rollback needed — synthetic event doesn't affect state
+      // No rollback needed -- synthetic event doesn't affect state
     },
   };
 }

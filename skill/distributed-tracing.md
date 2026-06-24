@@ -1,26 +1,26 @@
-# Distributed Tracing — Full OpenTelemetry Pipeline for Solana
+# Distributed Tracing -- Full OpenTelemetry Pipeline for Solana
 
 End-to-end request tracing from user action through RPC, program execution, and backend services.
 
 ## Architecture
 
 ```
-User Action → Frontend SDK (span start)
-      │
-      ▼
-RPC Request → (trace context in headers)
-      │
-      ▼
-Transaction Submit → (signature as span attribute)
-      │
-      ▼
-Program Execution → (CU, logs as span events)
-      │
-      ▼
-Confirmation → (span end, duration recorded)
-      │
-      ▼
-OpenTelemetry Collector → Tempo/Jaeger → Grafana
+User Action -> Frontend SDK (span start)
+      |
+      v
+RPC Request -> (trace context in headers)
+      |
+      v
+Transaction Submit -> (signature as span attribute)
+      |
+      v
+Program Execution -> (CU, logs as span events)
+      |
+      v
+Confirmation -> (span end, duration recorded)
+      |
+      v
+OpenTelemetry Collector -> Tempo/Jaeger -> Grafana
 ```
 
 ## TypeScript OTel Setup
@@ -168,7 +168,7 @@ service:
 
 ## Trace Context Propagation
 
-When calling multiple services (e.g., backend → RPC → indexer), propagate trace context:
+When calling multiple services (e.g., backend -> RPC -> indexer), propagate trace context:
 
 ```typescript
 import { context, propagation } from '@opentelemetry/api';
@@ -184,7 +184,7 @@ function extractTraceContext(headers: Record<string, string>): any {
 }
 ```
 
-## Correlation: Traces ↔ Logs ↔ Metrics
+## Correlation: Traces <-> Logs <-> Metrics
 
 Link all three signals using trace ID with **pino** (production-grade Node.js logger):
 
@@ -224,7 +224,7 @@ export function getLogger(module: string) {
 // Example:
 // const log = getLogger('transaction-monitor');
 // log.info({ signature, slot }, 'Transaction confirmed');
-// → Automatically includes trace_id and span_id for Grafana correlation
+// -> Automatically includes trace_id and span_id for Grafana correlation
 ```
 
 ## Custom Span Attributes for Solana

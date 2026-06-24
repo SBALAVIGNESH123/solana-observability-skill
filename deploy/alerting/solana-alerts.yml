@@ -126,7 +126,7 @@ groups:
           team: application
           window: fast
         annotations:
-          summary: "SLO burn rate 14.4x — budget exhausts in 1 hour"
+          summary: "SLO burn rate 14.4x -- budget exhausts in 1 hour"
           description: "Fast burn detected. Error budget will be exhausted within 1 hour at current rate."
 
       - alert: SolanaSLOBurnRateSlow
@@ -144,5 +144,5 @@ groups:
           team: application
           window: slow
         annotations:
-          summary: "SLO burn rate 6x — budget exhausts in 5 hours"
+          summary: "SLO burn rate 6x -- budget exhausts in 5 hours"
           description: "Slow burn detected. Investigate within 30 minutes."

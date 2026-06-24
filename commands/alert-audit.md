@@ -33,7 +33,7 @@ Audit existing Prometheus alert rules for gaps, noise, and best practices.
 
 ```
 📊 Alert Audit Report
-━━━━━━━━━━━━━━━━━━━━━
+---------------------
 
 Coverage: 7/10 critical scenarios covered
   ✅ RPC health monitoring
@@ -43,8 +43,8 @@ Coverage: 7/10 critical scenarios covered
   ❌ MISSING: Validator delinquency
   ❌ MISSING: Error budget burn rate
 
-Noise Score: 3/10 (good — low noise risk)
-  ⚠️ "RPCHighLatency" has no `for:` duration — will fire on single spike
+Noise Score: 3/10 (good -- low noise risk)
+  ⚠️ "RPCHighLatency" has no `for:` duration -- will fire on single spike
 
 Recommendations:
   1. Add multi-window burn rate alerts for landing rate SLO

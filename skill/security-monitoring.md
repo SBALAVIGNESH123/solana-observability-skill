@@ -1,4 +1,4 @@
-# Security Monitoring — Exploit Detection & Authority Change Alerts
+# Security Monitoring -- Exploit Detection & Authority Change Alerts
 
 Real-time security monitoring for Solana programs: detect authority changes, large token drains, suspicious patterns, and known exploit signatures.
 
@@ -165,7 +165,7 @@ export class SecurityMonitor {
         type: 'drain_and_close',
         severity: 'high',
         signature,
-        detail: 'Account closed immediately after transfer — possible drain',
+        detail: 'Account closed immediately after transfer -- possible drain',
       });
     }
 
@@ -256,7 +256,7 @@ class SecurityMetrics {
 }
 ```
 
-## Prometheus Alert Rules — Security
+## Prometheus Alert Rules -- Security
 
 ```yaml
 groups:
@@ -290,7 +290,7 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Security alerts are failing to deliver — check webhook configuration"
+          summary: "Security alerts are failing to deliver -- check webhook configuration"
 ```
 
 ## Integration with Existing Tools
@@ -308,8 +308,8 @@ groups:
 
 When a critical alert fires, the agent should recommend:
 
-1. **Verify** — Is this an authorized operation? Check multisig/governance logs.
-2. **Freeze** — If unauthorized, invoke program freeze authority (if available).
-3. **Trace** — Use explorer + Geyser history to trace fund movement.
-4. **Notify** — Alert team via PagerDuty/Slack/Discord.
-5. **Document** — Create incident timeline for post-mortem.
+1. **Verify** -- Is this an authorized operation? Check multisig/governance logs.
+2. **Freeze** -- If unauthorized, invoke program freeze authority (if available).
+3. **Trace** -- Use explorer + Geyser history to trace fund movement.
+4. **Notify** -- Alert team via PagerDuty/Slack/Discord.
+5. **Document** -- Create incident timeline for post-mortem.

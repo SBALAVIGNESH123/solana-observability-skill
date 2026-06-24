@@ -1,6 +1,6 @@
 ---
 name: solana-observability-skill
-description: Production-grade observability for Solana programs — real-time metrics, Geyser gRPC streaming, validator monitoring, security alerts, SLO burn-rate tracking, cost optimization, chaos testing, and incident response automation.
+description: Production-grade observability for Solana programs -- real-time metrics, Geyser gRPC streaming, validator monitoring, security alerts, SLO burn-rate tracking, cost optimization, chaos testing, and incident response automation.
 version: 2.0.0
 author: SBALAVIGNESH123
 extends:
@@ -20,7 +20,7 @@ tags:
 
 # Solana Observability Skill
 
-Production-grade observability for Solana programs, validators, and infrastructure. Covers the full lifecycle: instrumentation → collection → alerting → dashboards → incident response → chaos validation.
+Production-grade observability for Solana programs, validators, and infrastructure. Covers the full lifecycle: instrumentation -> collection -> alerting -> dashboards -> incident response -> chaos validation.
 
 ## When to Use This Skill
 
@@ -37,7 +37,7 @@ Load this skill when the user needs to:
 - Validate monitoring coverage with chaos engineering
 - Respond to production incidents with structured runbooks
 
-## Skill Files — Progressive Loading
+## Skill Files -- Progressive Loading
 
 Only load the file relevant to the current task:
 
@@ -74,18 +74,18 @@ Only load the file relevant to the current task:
 
 ## Key Principles
 
-1. **Metrics are cheap, outages are expensive** — instrument everything, alert selectively
-2. **Use Geyser gRPC for real-time** — polling is for health checks, streaming is for metrics
-3. **SLOs drive alerting** — alert on burn rate, not raw thresholds
-4. **Progressive disclosure** — start with RPC health, add depth as needed
-5. **Solana-native** — respect slot-based time, leader schedules, and epoch boundaries
-6. **Validate with chaos** — untested monitoring is theoretical monitoring
-7. **Cost-aware** — optimize CU allocation and priority fees to minimize spend
+1. **Metrics are cheap, outages are expensive** -- instrument everything, alert selectively
+2. **Use Geyser gRPC for real-time** -- polling is for health checks, streaming is for metrics
+3. **SLOs drive alerting** -- alert on burn rate, not raw thresholds
+4. **Progressive disclosure** -- start with RPC health, add depth as needed
+5. **Solana-native** -- respect slot-based time, leader schedules, and epoch boundaries
+6. **Validate with chaos** -- untested monitoring is theoretical monitoring
+7. **Cost-aware** -- optimize CU allocation and priority fees to minimize spend
 
 ## Quick Start Example
 
 ```typescript
-// Minimal RPC health monitor — runs in 30 seconds
+// Minimal RPC health monitor -- runs in 30 seconds
 import { Connection } from '@solana/web3.js';
 import { Histogram, Registry, collectDefaultMetrics } from 'prom-client';
 

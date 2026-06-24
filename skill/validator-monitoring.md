@@ -1,4 +1,4 @@
-# Validator Monitoring — Vote Latency, Skip Rate, Delinquency
+# Validator Monitoring -- Vote Latency, Skip Rate, Delinquency
 
 Production monitoring for Solana validators: performance tracking, stake health, epoch boundary alerts, and cluster participation metrics.
 
@@ -182,7 +182,7 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Validator is DELINQUENT — not voting"
+          summary: "Validator is DELINQUENT -- not voting"
           runbook: "1. Check validator logs. 2. Verify network connectivity. 3. Check if restart needed."
 
       - alert: HighSkipRate

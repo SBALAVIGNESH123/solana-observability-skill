@@ -1,4 +1,4 @@
-# Program Instrumentation — IDL-Aware CU Profiling & Anchor Events
+# Program Instrumentation -- IDL-Aware CU Profiling & Anchor Events
 
 Instrument Solana programs for observability: Anchor event parsing, CU profiling, Geyser-based metric extraction, and IDL-aware auto-parsing.
 
@@ -125,7 +125,7 @@ export function parseCUFromLogs(logs: string[]): { total: number; byProgram: Map
   let currentProgram = '';
 
   for (const log of logs) {
-    // "Program <pubkey> invoke [1]" — top-level invoke
+    // "Program <pubkey> invoke [1]" -- top-level invoke
     const invokeMatch = log.match(/^Program (\w+) invoke \[(\d+)\]/);
     if (invokeMatch && invokeMatch[2] === '1') {
       currentProgram = invokeMatch[1];

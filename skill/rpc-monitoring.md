@@ -1,4 +1,4 @@
-# RPC Monitoring — QoS-Aware with Stake-Weighted Routing
+# RPC Monitoring -- QoS-Aware with Stake-Weighted Routing
 
 Production RPC health monitoring with intelligent failover, rate-limit awareness, and stake-weighted endpoint selection.
 
@@ -283,7 +283,7 @@ groups:
           severity: critical
         annotations:
           summary: "All RPC endpoints are unreachable"
-          runbook: "Immediate escalation — check network, DNS, provider status"
+          runbook: "Immediate escalation -- check network, DNS, provider status"
 
       - alert: RPCHighLatency
         expr: histogram_quantile(0.99, rate(solana_rpc_request_duration_seconds_bucket[5m])) > 2
@@ -315,7 +315,7 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Circuit breaker OPEN for {{ $labels.provider }} — endpoint removed from rotation"
+          summary: "Circuit breaker OPEN for {{ $labels.provider }} -- endpoint removed from rotation"
 ```
 
 ## WebSocket Connection Monitoring

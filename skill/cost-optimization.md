@@ -1,4 +1,4 @@
-# Cost Optimization — CU Profiling & Priority Fee Strategy
+# Cost Optimization -- CU Profiling & Priority Fee Strategy
 
 Advanced compute unit optimization and dynamic priority fee management for production Solana programs.
 
@@ -6,10 +6,10 @@ Advanced compute unit optimization and dynamic priority fee management for produ
 
 | Metric | Impact |
 |--------|--------|
-| CU over-allocation | Paying for 200k CU when you use 50k = 4× overspend on priority fees |
+| CU over-allocation | Paying for 200k CU when you use 50k = 4x overspend on priority fees |
 | Under-allocation | Transaction dropped by scheduler = user-visible failure |
 | Static priority fees | Overpay during low congestion, underpay during high congestion |
-| No CU profiling | Blind optimization — can't improve what you can't measure |
+| No CU profiling | Blind optimization -- can't improve what you can't measure |
 
 ## CU Profiler
 
@@ -178,7 +178,7 @@ export class PriorityFeeManager {
     const len = sorted.length;
 
     if (len === 0) {
-      // No data — use conservative defaults
+      // No data -- use conservative defaults
       const defaults: Record<string, FeeStrategy> = {
         low: { level: 'low', microLamportsPerCU: 100, maxLamports: 10_000 },
         medium: { level: 'medium', microLamportsPerCU: 1_000, maxLamports: 50_000 },
@@ -190,10 +190,10 @@ export class PriorityFeeManager {
 
     // Percentile-based fee selection
     const percentiles: Record<string, number> = {
-      low: 0.25,      // 25th percentile — cheaper, might be slow
-      medium: 0.50,   // 50th percentile — balanced
-      high: 0.75,     // 75th percentile — faster confirmation
-      urgent: 0.95,   // 95th percentile — near-guaranteed next slot
+      low: 0.25,      // 25th percentile -- cheaper, might be slow
+      medium: 0.50,   // 50th percentile -- balanced
+      high: 0.75,     // 75th percentile -- faster confirmation
+      urgent: 0.95,   // 95th percentile -- near-guaranteed next slot
     };
 
     const index = Math.floor(len * percentiles[level]);
@@ -268,7 +268,7 @@ sum(rate(solana_priority_fee_microlamports_sum[1h])) / 1e6 / 1e9
 (solana_priority_fee_static_cost - solana_priority_fee_dynamic_cost) / solana_priority_fee_static_cost
 ```
 
-## Prometheus Alerts — Cost
+## Prometheus Alerts -- Cost
 
 ```yaml
 groups:
@@ -283,7 +283,7 @@ groups:
         labels:
           severity: info
         annotations:
-          summary: "Instruction {{ $labels.instruction }} is using <50% of allocated CU — reduce limit to save fees"
+          summary: "Instruction {{ $labels.instruction }} is using <50% of allocated CU -- reduce limit to save fees"
 
       - alert: HighPriorityFeeSpend
         expr: sum(rate(solana_priority_fee_microlamports_sum[1h])) / 1e6 / 1e9 > 0.1
@@ -291,5 +291,5 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Spending >0.1 SOL/hour on priority fees — review fee strategy"
+          summary: "Spending >0.1 SOL/hour on priority fees -- review fee strategy"
 ```

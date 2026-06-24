@@ -8,9 +8,9 @@ REPO="https://github.com/SBALAVIGNESH123/solana-observability-skill.git"
 SKILL_DIR="${SOLANA_AI_KIT_DIR:-$HOME/.solana-ai-kit}/skills/solana-observability-skill"
 AUTO_CONFIRM="${1:-}"
 
-echo "╔════════════════════════════════════════════╗"
-echo "║  Solana Observability Skill Installer      ║"
-echo "╚════════════════════════════════════════════╝"
+echo "+============================================+"
+echo "|  Solana Observability Skill Installer      |"
+echo "+============================================+"
 echo ""
 
 # Check for git

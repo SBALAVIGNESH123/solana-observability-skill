@@ -1,18 +1,18 @@
-# CLAUDE.md — Solana Observability Skill Configuration
+# CLAUDE.md -- Solana Observability Skill Configuration
 
 ## Skill Loading
 
 This skill follows progressive loading. Only load the skill file relevant to the current task:
 
-- RPC monitoring → `skill/rpc-monitoring.md`
-- Geyser streaming → `skill/geyser-streaming.md`
-- Transaction metrics → `skill/transaction-metrics.md`
-- Validator monitoring → `skill/validator-monitoring.md`
-- Security alerts → `skill/security-monitoring.md`
-- SLO alerting → `skill/alerting-slo.md`
-- Program CU profiling → `skill/program-instrumentation.md`
-- Dashboards → `skill/dashboards.md`
-- Distributed tracing → `skill/distributed-tracing.md`
+- RPC monitoring -> `skill/rpc-monitoring.md`
+- Geyser streaming -> `skill/geyser-streaming.md`
+- Transaction metrics -> `skill/transaction-metrics.md`
+- Validator monitoring -> `skill/validator-monitoring.md`
+- Security alerts -> `skill/security-monitoring.md`
+- SLO alerting -> `skill/alerting-slo.md`
+- Program CU profiling -> `skill/program-instrumentation.md`
+- Dashboards -> `skill/dashboards.md`
+- Distributed tracing -> `skill/distributed-tracing.md`
 
 ## Rules (Always Active)
 
@@ -27,6 +27,6 @@ This skill follows progressive loading. Only load the skill file relevant to the
 
 ## Commands
 
-- `/obs-health-check` — Run infrastructure health check
-- `/obs-dashboard-gen` — Generate Grafana dashboard
-- `/obs-alert-audit` — Audit alert rule coverage
+- `/obs-health-check` -- Run infrastructure health check
+- `/obs-dashboard-gen` -- Generate Grafana dashboard
+- `/obs-alert-audit` -- Audit alert rule coverage

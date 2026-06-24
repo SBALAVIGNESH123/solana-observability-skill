@@ -1,6 +1,6 @@
 # Geyser gRPC Streaming (Yellowstone)
 
-Real-time on-chain data streaming via Yellowstone gRPC — the 2026 standard for production Solana observability. Replaces polling with server-push architecture.
+Real-time on-chain data streaming via Yellowstone gRPC -- the 2026 standard for production Solana observability. Replaces polling with server-push architecture.
 
 ## Why Geyser gRPC Over Polling
 
@@ -10,31 +10,31 @@ Real-time on-chain data streaming via Yellowstone gRPC — the 2026 standard for
 | WebSocket `onAccountChange` | ~400ms | Moderate | 0 CU | Single account watch |
 | **Geyser gRPC (Yellowstone)** | **<50ms** | **Unlimited** | **0 CU** | **Production metrics** |
 
-Geyser sits inside the validator — data arrives before RPC even processes it.
+Geyser sits inside the validator -- data arrives before RPC even processes it.
 
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────┐
-│ Solana Validator                                      │
-│                                                      │
-│  AccountsDB ──► Geyser Plugin ──► gRPC Server        │
-│                    │                    │             │
-│                    ▼                    ▼             │
-│              Slot notifications    Account updates    │
-│              Transaction results   Program events     │
-└──────────────────────────────────────────────────────┘
-         │
-         ▼ gRPC stream (protobuf, bi-directional)
-┌──────────────────────────────────────────────────────┐
-│ Your Observability Pipeline                           │
-│                                                      │
-│  gRPC Client ──► Metrics Parser ──► Prometheus       │
-│       │                │                             │
-│       ▼                ▼                             │
-│  Reconnect logic   Structured logs ──► Loki          │
-│  Backpressure      Trace context  ──► Tempo/Jaeger   │
-└──────────────────────────────────────────────────────┘
++------------------------------------------------------+
+| Solana Validator                                      |
+|                                                      |
+|  AccountsDB --> Geyser Plugin --> gRPC Server        |
+|                    |                    |             |
+|                    v                    v             |
+|              Slot notifications    Account updates    |
+|              Transaction results   Program events     |
++------------------------------------------------------+
+         |
+         v gRPC stream (protobuf, bi-directional)
++------------------------------------------------------+
+| Your Observability Pipeline                           |
+|                                                      |
+|  gRPC Client --> Metrics Parser --> Prometheus       |
+|       |                |                             |
+|       v                v                             |
+|  Reconnect logic   Structured logs --> Loki          |
+|  Backpressure      Trace context  --> Tempo/Jaeger   |
++------------------------------------------------------+
 ```
 
 ## Setup: Yellowstone gRPC Client (TypeScript)
@@ -112,7 +112,7 @@ export class GeyserObserver {
       }
     });
 
-    // Keepalive ping every 10s — stored so we can clear on reconnect
+    // Keepalive ping every 10s -- stored so we can clear on reconnect
     this.startKeepalive(stream);
   }
 
@@ -235,7 +235,7 @@ export class GeyserObserver {
       try {
         stream.write({ ping: { id: Date.now() } });
       } catch {
-        // stream closed — reconnect will handle it
+        // stream closed -- reconnect will handle it
         this.clearKeepalive();
       }
     }, 10_000);
@@ -454,7 +454,7 @@ class BackpressureHandler {
     if (this.queue.length >= this.maxQueueSize) {
       this.dropCount++;
       this.metrics.droppedUpdates.inc();
-      // Drop oldest — prefer fresh data
+      // Drop oldest -- prefer fresh data
       this.queue.shift();
       if (this.dropCount % 1000 === 0) {
         console.warn(`Backpressure: dropped ${this.dropCount} updates total`);

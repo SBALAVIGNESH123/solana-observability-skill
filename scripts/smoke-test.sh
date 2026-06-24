@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# smoke-test.sh — Verify the observability stack is working
+# smoke-test.sh -- Verify the observability stack is working
 # Usage: ./scripts/smoke-test.sh [--deploy] [--cleanup]
 set -euo pipefail
 
@@ -27,7 +27,7 @@ check() {
 }
 
 echo "============================================="
-echo " Solana Observability Skill — Smoke Test"
+echo " Solana Observability Skill -- Smoke Test"
 echo " Version: 2.0.0"
 echo "============================================="
 echo
@@ -66,7 +66,7 @@ if command -v node &> /dev/null; then
   check "tsconfig.json is valid JSON" "node -e 'JSON.parse(require(\"fs\").readFileSync(\"tsconfig.json\"))'"
   check "Grafana dashboard is valid JSON" "node -e 'JSON.parse(require(\"fs\").readFileSync(\"deploy/grafana/dashboards/solana-overview.json\"))'"
 else
-  warn "Node.js not found — skipping JSON validation"
+  warn "Node.js not found -- skipping JSON validation"
 fi
 
 if command -v docker &> /dev/null; then
@@ -87,7 +87,7 @@ if command -v docker &> /dev/null; then
     cd ..
   fi
 else
-  warn "Docker not found — skipping deploy test"
+  warn "Docker not found -- skipping deploy test"
 fi
 echo
 
@@ -96,7 +96,7 @@ echo "--- TypeScript Check ---"
 if command -v npx &> /dev/null && [ -f node_modules/.bin/tsc ] 2>/dev/null; then
   check "TypeScript compiles" "npx tsc --noEmit"
 else
-  warn "TypeScript compiler not installed — run 'npm install' first"
+  warn "TypeScript compiler not installed -- run 'npm install' first"
   info "  To verify: npm install && npm run typecheck"
 fi
 echo

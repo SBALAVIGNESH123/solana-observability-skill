@@ -1,6 +1,6 @@
-# SLO-Based Alerting — Multi-Window Burn Rates (Google SRE Methodology)
+# SLO-Based Alerting -- Multi-Window Burn Rates (Google SRE Methodology)
 
-Define Service Level Objectives for Solana applications and alert on error budget consumption rate — not raw thresholds.
+Define Service Level Objectives for Solana applications and alert on error budget consumption rate -- not raw thresholds.
 
 ## SLO Framework
 
@@ -11,7 +11,7 @@ Define Service Level Objectives for Solana applications and alert on error budge
 | **SLI** (Service Level Indicator) | Measurable metric | `tx_landed / tx_submitted` |
 | **SLO** (Service Level Objective) | Target for SLI | "99.5% of transactions land within 30s" |
 | **Error Budget** | Allowed failures | 0.5% = ~4,320 failures/day at 20 tx/s |
-| **Burn Rate** | How fast budget is consumed | 2× = exhausted in 12h instead of 30d |
+| **Burn Rate** | How fast budget is consumed | 2x = exhausted in 12h instead of 30d |
 
 ### Defining SLOs for Solana
 
@@ -25,15 +25,15 @@ slos:
     target: 0.995          # 99.5%
     window: 30d            # monthly budget
     alerts:
-      - burn_rate: 14.4    # budget exhausted in 2h → page immediately
+      - burn_rate: 14.4    # budget exhausted in 2h -> page immediately
         short_window: 5m
         long_window: 1h
         severity: critical
-      - burn_rate: 6       # budget exhausted in 5h → page
+      - burn_rate: 6       # budget exhausted in 5h -> page
         short_window: 30m
         long_window: 6h
         severity: critical
-      - burn_rate: 1       # budget exhausted in 30d → ticket
+      - burn_rate: 1       # budget exhausted in 30d -> ticket
         short_window: 6h
         long_window: 3d
         severity: warning
@@ -103,7 +103,7 @@ groups:
           severity: critical
           slo: transaction_landing
         annotations:
-          summary: "TX landing SLO burning 14.4× — budget exhausted in ~2 hours"
+          summary: "TX landing SLO burning 14.4x -- budget exhausted in ~2 hours"
           burn_rate: "{{ $value }}"
           action: "Page on-call immediately"
 
@@ -114,7 +114,7 @@ groups:
           severity: critical
           slo: transaction_landing
         annotations:
-          summary: "TX landing SLO burning 6× — budget exhausted in ~5 hours"
+          summary: "TX landing SLO burning 6x -- budget exhausted in ~5 hours"
 
       - alert: TxLandingSLOSlowBurn
         expr: solana:tx_landing:burn_rate_6h > 1 AND solana:tx_landing:burn_rate_3d > 1
@@ -123,7 +123,7 @@ groups:
           severity: warning
           slo: transaction_landing
         annotations:
-          summary: "TX landing SLO slowly degrading — budget at risk for the month"
+          summary: "TX landing SLO slowly degrading -- budget at risk for the month"
           action: "Create ticket, investigate root cause"
 ```
 
@@ -165,7 +165,7 @@ export class SLOAlertRouter {
         await this.sendSlack(alert, ':rotating_light:');
       }
     } else if (alert.severity === 'warning') {
-      // Slack only — don't page for slow burns
+      // Slack only -- don't page for slow burns
       if (this.config.slackWebhook) {
         await this.sendSlack(alert, ':warning:');
       }
@@ -194,7 +194,7 @@ export class SLOAlertRouter {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: `${emoji} *SLO Alert*: ${alert.slo}\nBurn rate: ${alert.burnRate}×\n${alert.message}`,
+        text: `${emoji} *SLO Alert*: ${alert.slo}\nBurn rate: ${alert.burnRate}x\n${alert.message}`,
       }),
     });
   }
