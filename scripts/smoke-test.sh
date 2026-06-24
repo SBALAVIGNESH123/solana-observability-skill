@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # smoke-test.sh — Verify the observability stack is working
 # Usage: ./scripts/smoke-test.sh [--deploy] [--cleanup]
 set -euo pipefail

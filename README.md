@@ -1,4 +1,4 @@
-﻿# solana-observability-skill
+# solana-observability-skill
 
 > Production-grade observability for Solana programs, validators, and infrastructure.
 > A skill for the [Solana AI Kit](https://github.com/solanabr/solana-ai-kit).

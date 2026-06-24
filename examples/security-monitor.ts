@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Solana Observability Skill — Security Monitor Example
  *
  * Real-time detection of authority changes, large drains, and

@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "solana-observability-skill",
   "version": "2.0.0",
   "description": "Production-grade observability for Solana programs, validators, and infrastructure",

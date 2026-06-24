@@ -1,4 +1,4 @@
-﻿groups:
+groups:
   - name: solana_rpc_health
     rules:
       - alert: SolanaRPCDown
