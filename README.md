@@ -1,4 +1,4 @@
-# solana-observability-skill
+﻿# solana-observability-skill
 
 > Production-grade observability for Solana programs, validators, and infrastructure.
 > A skill for the [Solana AI Kit](https://github.com/solanabr/solana-ai-kit).
@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Solana AI Kit](https://img.shields.io/badge/Solana_AI_Kit-compatible-blueviolet)](https://github.com/solanabr/solana-ai-kit)
 [![Version](https://img.shields.io/badge/version-2.0.0-blue)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue?logo=typescript)](tsconfig.json)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-green?logo=node.js)](package.json)
 
 ---
 
@@ -16,13 +18,13 @@
 │                    Your Solana Program / Validator                │
 └────────────┬──────────────────────┬─────────────────┬───────────┘
              │                      │                 │
-     ┌───────▼───────┐    ┌────────▼────────┐   ┌───▼────────────┐
+     ┌───────▼───────┐    ┌────────▼────────┐   ┌───▼───────────────┐
      │  RPC Monitor  │    │  Geyser gRPC    │   │  Security Mon  │
      │  (failover +  │    │  (Yellowstone   │   │  (authority +  │
      │   circuit brk)│    │   <50ms stream) │   │   drain detect)│
      └───────┬───────┘    └────────┬────────┘   └───┬────────────┘
              │                     │                 │
-     ┌───────▼─────────────────────▼─────────────────▼───────────┐
+     ┌───────▼─────────────────────────▼─────────────────▼───────────┐
      │              Prometheus + OpenTelemetry Collector           │
      │         (metrics, traces, logs — unified pipeline)         │
      └───────┬─────────────────────┬─────────────────┬───────────┘
@@ -42,10 +44,10 @@ Every Solana builder eventually hits these walls:
 - **"Why did my transaction fail?"** — No clear lifecycle tracking from send → land → confirm
 - **"Why is latency spiking?"** — No RPC health visibility across providers
 - **"Is my program being exploited?"** — No real-time authority/drain detection
-- **"What's my validator doing?"** — No unified skip rate / vote latency dashboard
+- **"What’s my validator doing?"** — No unified skip rate / vote latency dashboard
 - **"Am I overpaying for priority fees?"** — No CU profiling or cost optimization
 
-There's no unified, production-grade observability solution for Solana. Builders cobble together ad-hoc scripts every time. This skill fixes that — permanently.
+There’s no unified, production-grade observability solution for Solana. Builders cobble together ad-hoc scripts every time. This skill fixes that — permanently.
 
 ---
 
@@ -69,7 +71,42 @@ This skill gives AI coding agents (Claude Code, Codex) the knowledge to design, 
 
 ---
 
-## Install
+## Quick Start Demo
+
+The `deploy/` directory contains a **fully working** monitoring stack you can spin up in 60 seconds:
+
+```bash
+# Clone the repo
+git clone https://github.com/SBALAVIGNESH123/solana-observability-skill.git
+cd solana-observability-skill
+
+# Start the full stack (Prometheus + Grafana + Solana exporter)
+cd deploy && docker compose up -d
+
+# Access:
+#   Grafana:    http://localhost:3000 (admin / solana-obs)
+#   Prometheus: http://localhost:9090
+#   Exporter:   http://localhost:9100/metrics
+```
+
+**What’s included in the demo:**
+- Pre-configured Prometheus scraping Solana RPC health metrics
+- Grafana dashboard auto-provisioned with 8 panels (RPC health, landing rate, circuit breaker, security alerts, validator skip rate, SLO burn rate)
+- Real alert rules for RPC down, high latency, low landing rate, security incidents, validator delinquency, and SLO burn
+- A working Node.js exporter that monitors Solana mainnet RPC
+
+**Verify it works:**
+```bash
+# Run the smoke test
+bash scripts/smoke-test.sh
+
+# Or with full deploy verification
+bash scripts/smoke-test.sh --deploy --cleanup
+```
+
+---
+
+## Install (AI Kit Skill)
 
 ```bash
 # One-command install into Solana AI Kit
@@ -116,6 +153,24 @@ solana-observability-skill/
 ├── rules/
 │   ├── metrics-naming.md           # Enforced solana_* naming + label cardinality
 │   └── observability-patterns.md   # Code generation best practices
+├── deploy/                         # Working deployment stack
+│   ├── docker-compose.yml          # Prometheus + Grafana + Exporter
+│   ├── prometheus.yml              # Scrape configs for Solana metrics
+│   ├── alerting/
+│   │   └── solana-alerts.yml        # Production alert rules (12 alerts)
+│   └── grafana/
+│       ├── dashboards/
+│       │   └── solana-overview.json  # Importable Grafana dashboard (8 panels)
+│       └── provisioning/
+│           ├── dashboards/dashboards.yml
+│           └── datasources/prometheus.yml
+├── examples/                       # Working TypeScript examples
+│   ├── rpc-health-monitor.ts       # Full RPC monitor with Prometheus export
+│   └── security-monitor.ts         # Security monitoring with webhook alerts
+├── scripts/
+│   └── smoke-test.sh               # Automated verification (20+ checks)
+├── package.json                    # npm project with all dependencies
+├── tsconfig.json                   # TypeScript strict mode config
 ├── CLAUDE.md                       # Claude Code configuration + routing
 ├── LICENSE                         # MIT
 ├── README.md                       # This file
@@ -169,15 +224,15 @@ Once installed, ask your AI agent:
 | OpenTelemetry Collector | 0.102.0 | Unified telemetry pipeline |
 | pino | 9.x | Structured logging (Node.js) |
 | prom-client | 15.x | Prometheus metrics (Node.js) |
-| @solana/web3.js | 1.x | Solana RPC + WebSocket |
-| @triton-one/yellowstone-grpc | latest | Geyser gRPC streaming |
+| @solana/web3.js | 1.95+ | Solana RPC + WebSocket |
+| @triton-one/yellowstone-grpc | 1.3+ | Geyser gRPC streaming |
 | @coral-xyz/anchor | 0.30+ | IDL parsing + event decoding |
 
 ---
 
 ## Cross-Domain Coverage
 
-| Domain | What's Monitored |
+| Domain | What’s Monitored |
 |--------|-----------------|
 | **DeFi** | Swap failures, pool imbalance, MEV extraction, priority fee waste |
 | **NFT** | Mint failures, metadata propagation, royalty enforcement |
@@ -187,7 +242,6 @@ Once installed, ask your AI agent:
 | **Infrastructure** | RPC availability, Geyser stream health, WebSocket stability |
 
 ---
-
 
 ## Progressive Loading
 
@@ -205,7 +259,7 @@ The routing table in `SKILL.md` maps tasks to files. This keeps context windows 
 
 ## Workflow Conventions
 
-- **Two-Strike Rule:** If a monitoring approach doesn't work after two attempts, the agent escalates to `observability-architect` for a full redesign
+- **Two-Strike Rule:** If a monitoring approach doesn’t work after two attempts, the agent escalates to `observability-architect` for a full redesign
 - **Metrics Naming:** All metrics follow `solana_{domain}_{metric}_{unit}` convention (enforced by `rules/metrics-naming.md`)
 - **Label Cardinality:** Never use unbounded values (signatures, addresses) as metric labels — bounded enums only
 
@@ -216,6 +270,10 @@ The routing table in `SKILL.md` maps tasks to files. This keeps context windows 
 ```bash
 git clone https://github.com/SBALAVIGNESH123/solana-observability-skill.git
 cd solana-observability-skill
+npm install
+
+# Run smoke test
+bash scripts/smoke-test.sh
 
 # Make changes, then:
 git checkout -b feat/your-improvement

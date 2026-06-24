@@ -1,0 +1,148 @@
+﻿groups:
+  - name: solana_rpc_health
+    rules:
+      - alert: SolanaRPCDown
+        expr: solana_rpc_health_status == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: "Solana RPC endpoint {{ $labels.endpoint }} is down"
+          description: "RPC endpoint has been unreachable for more than 2 minutes. Current status: {{ $value }}"
+          runbook_url: "https://github.com/SBALAVIGNESH123/solana-observability-skill/blob/main/skill/rpc-monitoring.md#troubleshooting"
+
+      - alert: SolanaRPCHighLatency
+        expr: histogram_quantile(0.95, rate(solana_rpc_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "Solana RPC p95 latency above 2s on {{ $labels.endpoint }}"
+          description: "p95 latency: {{ $value }}s. Consider failover or provider switch."
+
+      - alert: SolanaRPCCircuitOpen
+        expr: solana_rpc_circuit_breaker_state == 2
+        for: 1m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: "Circuit breaker OPEN for {{ $labels.endpoint }}"
+          description: "RPC endpoint has tripped circuit breaker. Traffic is being routed to fallback providers."
+
+  - name: solana_transaction_health
+    rules:
+      - alert: SolanaLowLandingRate
+        expr: solana_tx_landing_rate_percent < 80
+        for: 10m
+        labels:
+          severity: warning
+          team: application
+        annotations:
+          summary: "Transaction landing rate below 80%"
+          description: "Current landing rate: {{ $value }}%. Check priority fees and RPC health."
+
+      - alert: SolanaLandingRateCritical
+        expr: solana_tx_landing_rate_percent < 50
+        for: 5m
+        labels:
+          severity: critical
+          team: application
+        annotations:
+          summary: "CRITICAL: Transaction landing rate below 50%"
+          description: "Current landing rate: {{ $value }}%. Immediate investigation required."
+
+      - alert: SolanaHighTxErrorRate
+        expr: rate(solana_tx_errors_total[5m]) / rate(solana_tx_sent_total[5m]) > 0.2
+        for: 5m
+        labels:
+          severity: warning
+          team: application
+        annotations:
+          summary: "Transaction error rate above 20%"
+          description: "Error rate: {{ $value | humanizePercentage }}. Check error classification for root cause."
+
+  - name: solana_security
+    rules:
+      - alert: SolanaAuthorityChange
+        expr: increase(solana_security_authority_changes_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: "Program authority change detected for {{ $labels.program }}"
+          description: "An authority change was detected. Verify this was intentional."
+
+      - alert: SolanaLargeDrain
+        expr: solana_security_drain_amount_sol > 100
+        for: 0m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: "Large drain detected: {{ $value }} SOL from {{ $labels.account }}"
+          description: "A transfer exceeding 100 SOL was detected. Investigate immediately."
+
+  - name: solana_validator
+    rules:
+      - alert: SolanaValidatorDelinquent
+        expr: solana_validator_delinquent == 1
+        for: 5m
+        labels:
+          severity: critical
+          team: validators
+        annotations:
+          summary: "Validator {{ $labels.identity }} is delinquent"
+          description: "Validator has been delinquent for more than 5 minutes."
+
+      - alert: SolanaHighSkipRate
+        expr: solana_validator_skip_rate > 0.15
+        for: 10m
+        labels:
+          severity: warning
+          team: validators
+        annotations:
+          summary: "Validator skip rate above 15%"
+          description: "Current skip rate: {{ $value | humanizePercentage }}. Check hardware and connectivity."
+
+  - name: solana_slo_burn_rate
+    rules:
+      # Multi-window burn rate alerts (Google SRE methodology)
+      - alert: SolanaSLOBurnRateFast
+        expr: |
+          (
+            solana_tx_errors_total:rate5m / (1 - 0.995)
+          ) > 14.4
+          and
+          (
+            solana_tx_errors_total:rate1h / (1 - 0.995)
+          ) > 14.4
+        for: 2m
+        labels:
+          severity: critical
+          team: application
+          window: fast
+        annotations:
+          summary: "SLO burn rate 14.4x — budget exhausts in 1 hour"
+          description: "Fast burn detected. Error budget will be exhausted within 1 hour at current rate."
+
+      - alert: SolanaSLOBurnRateSlow
+        expr: |
+          (
+            solana_tx_errors_total:rate30m / (1 - 0.995)
+          ) > 6
+          and
+          (
+            solana_tx_errors_total:rate6h / (1 - 0.995)
+          ) > 6
+        for: 15m
+        labels:
+          severity: warning
+          team: application
+          window: slow
+        annotations:
+          summary: "SLO burn rate 6x — budget exhausts in 5 hours"
+          description: "Slow burn detected. Investigate within 30 minutes."
