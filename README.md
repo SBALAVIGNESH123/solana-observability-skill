@@ -14,25 +14,25 @@
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Your Solana Program / Validator                │
-└────────────┬──────────────────────┬─────────────────┬───────────┘
-             │                      │                 │
-     ┌───────▼───────┐    ┌────────▼────────┐   ┌───▼───────────────┐
-     │  RPC Monitor  │    │  Geyser gRPC    │   │  Security Mon  │
-     │  (failover +  │    │  (Yellowstone   │   │  (authority +  │
-     │   circuit brk)│    │   <50ms stream) │   │   drain detect)│
-     └───────┬───────┘    └────────┬────────┘   └───┬────────────┘
-             │                     │                 │
-     ┌───────▼─────────────────────────▼─────────────────▼───────────┐
-     │              Prometheus + OpenTelemetry Collector           │
-     │         (metrics, traces, logs — unified pipeline)         │
-     └───────┬─────────────────────┬─────────────────┬───────────┘
-             │                     │                 │
-     ┌───────▼───────┐    ┌───────▼───────┐   ┌────▼───────────┐
-     │   Grafana     │    │  PagerDuty /  │   │  SLO Burn Rate │
-     │  Dashboards   │    │  Slack Alerts │   │  Engine        │
-     └───────────────┘    └───────────────┘   └────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    Your Solana Program / Validator                â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+             â”‚                      â”‚                 â”‚
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+     â”‚  RPC Monitor  â”‚    â”‚  Geyser gRPC    â”‚   â”‚  Security Mon  â”‚
+     â”‚  (failover +  â”‚    â”‚  (Yellowstone   â”‚   â”‚  (authority +  â”‚
+     â”‚   circuit brk)â”‚    â”‚   <50ms stream) â”‚   â”‚   drain detect)â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜    â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+             â”‚                     â”‚                 â”‚
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+     â”‚              Prometheus + OpenTelemetry Collector           â”‚
+     â”‚         (metrics, traces, logs â€” unified pipeline)         â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+             â”‚                     â”‚                 â”‚
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”    â”Œâ”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+     â”‚   Grafana     â”‚    â”‚  PagerDuty /  â”‚   â”‚  SLO Burn Rate â”‚
+     â”‚  Dashboards   â”‚    â”‚  Slack Alerts â”‚   â”‚  Engine        â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
@@ -41,13 +41,13 @@
 
 Every Solana builder eventually hits these walls:
 
-- **"Why did my transaction fail?"** — No clear lifecycle tracking from send → land → confirm
-- **"Why is latency spiking?"** — No RPC health visibility across providers
-- **"Is my program being exploited?"** — No real-time authority/drain detection
-- **"What’s my validator doing?"** — No unified skip rate / vote latency dashboard
-- **"Am I overpaying for priority fees?"** — No CU profiling or cost optimization
+- **"Why did my transaction fail?"** â€” No clear lifecycle tracking from send â†’ land â†’ confirm
+- **"Why is latency spiking?"** â€” No RPC health visibility across providers
+- **"Is my program being exploited?"** â€” No real-time authority/drain detection
+- **"Whatâ€™s my validator doing?"** â€” No unified skip rate / vote latency dashboard
+- **"Am I overpaying for priority fees?"** â€” No CU profiling or cost optimization
 
-There’s no unified, production-grade observability solution for Solana. Builders cobble together ad-hoc scripts every time. This skill fixes that — permanently.
+Thereâ€™s no unified, production-grade observability solution for Solana. Builders cobble together ad-hoc scripts every time. This skill fixes that â€” permanently.
 
 ---
 
@@ -64,7 +64,7 @@ This skill gives AI coding agents (Claude Code, Codex) the knowledge to design, 
 | **Security Monitoring** | Authority changes, large drains, flash loans, exploit patterns |
 | **SLO-Based Alerting** | Multi-window burn rates (Google SRE methodology for Solana) |
 | **Program Instrumentation** | CU profiling, Anchor event parsing, IDL-aware auto-metrics |
-| **Distributed Tracing** | Full OpenTelemetry pipeline with trace↔log↔metric correlation |
+| **Distributed Tracing** | Full OpenTelemetry pipeline with traceâ†”logâ†”metric correlation |
 | **Grafana Dashboards** | Dashboard-as-code with Terraform provisioning |
 | **Cost Optimization** | Dynamic priority fees, CU simulation, savings tracking |
 | **Chaos Testing** | Resilience verification, CI/CD integration, failure injection |
@@ -89,7 +89,7 @@ cd deploy && docker compose up -d
 #   Exporter:   http://localhost:9100/metrics
 ```
 
-**What’s included in the demo:**
+**Whatâ€™s included in the demo:**
 - Pre-configured Prometheus scraping Solana RPC health metrics
 - Grafana dashboard auto-provisioned with 8 panels (RPC health, landing rate, circuit breaker, security alerts, validator skip rate, SLO burn rate)
 - Real alert rules for RPC down, high latency, low landing rate, security incidents, validator delinquency, and SLO burn
@@ -105,6 +105,44 @@ bash scripts/smoke-test.sh --deploy --cleanup
 ```
 
 ---
+
+
+---
+
+## Demo - Running Locally
+
+> Screenshots from a real local deployment (Docker Desktop, Windows 11).
+
+### Grafana Dashboard - Auto-Provisioned
+
+![Grafana Dashboard](docs/images/grafana-dashboard.png)
+
+*8 panels auto-provisioned: RPC Health Status, Transaction Landing Rate, Circuit Breaker State, Security Alerts, RPC Request Latency (p95), Transactions Sent vs Landed, Validator Skip Rate, SLO Error Budget Remaining. Panels show 'No data' because no live Solana RPC is connected - the infrastructure itself is fully operational.*
+
+### Grafana Login - Service Running
+
+![Grafana Login](docs/images/grafana-login.png)
+
+*Grafana accessible at localhost:3000 - auto-configured with Prometheus datasource and dashboard provisioning.*
+
+---
+
+
+---
+
+## Deployment Proof
+
+The deploy stack runs locally with docker compose up -d:
+
+### Grafana Dashboard (8 panels auto-provisioned)
+
+![Grafana Dashboard](docs/images/grafana-dashboard.png)
+
+### Prometheus Metrics Engine
+
+![Prometheus UI](docs/images/prometheus-ui.png)
+
+> Both services start in under 10 seconds. Grafana auto-provisions the Solana Overview dashboard with 8 panels. Prometheus loads 12 alert rules across 5 groups.
 
 ## Install (AI Kit Skill)
 
@@ -128,53 +166,53 @@ curl -fsSL https://raw.githubusercontent.com/SBALAVIGNESH123/solana-observabilit
 
 ```
 solana-observability-skill/
-├── skill/
-│   ├── SKILL.md                    # Entry point — progressive routing (12 files)
-│   ├── rpc-monitoring.md           # Multi-provider health + circuit breakers
-│   ├── geyser-streaming.md         # Yellowstone gRPC + failover manager
-│   ├── transaction-metrics.md      # Landing rate, MEV, Jito bundles
-│   ├── validator-monitoring.md     # Vote latency, skip rate, delinquency
-│   ├── security-monitoring.md      # Exploit detection, drain alerts, flash loans
-│   ├── alerting-slo.md             # Multi-window burn rates, PagerDuty/Slack
-│   ├── program-instrumentation.md  # CU profiling, Anchor events, Geyser plugin (Rust)
-│   ├── dashboards.md               # Grafana + Terraform + Docker Compose
-│   ├── distributed-tracing.md      # Full OTel pipeline, pino structured logging
-│   ├── cost-optimization.md        # CU profiler, dynamic priority fees, simulation
-│   ├── chaos-testing.md            # Resilience framework, CI/CD, failure injection
-│   └── resources.md                # SDK reference + tool links + provider comparison
-├── agents/
-│   ├── observability-architect.md  # Designs full monitoring stacks by team size
-│   ├── incident-responder.md       # 4-phase incident protocol with solana CLI
-│   └── metrics-engineer.md         # Implements metrics, histograms, PromQL
-├── commands/
-│   ├── health-check.md             # /obs-health-check — structured health report
-│   ├── dashboard-gen.md            # /obs-dashboard-gen — Grafana JSON from program ID
-│   └── alert-audit.md              # /obs-alert-audit — coverage gaps + noise analysis
-├── rules/
-│   ├── metrics-naming.md           # Enforced solana_* naming + label cardinality
-│   └── observability-patterns.md   # Code generation best practices
-├── deploy/                         # Working deployment stack
-│   ├── docker-compose.yml          # Prometheus + Grafana + Exporter
-│   ├── prometheus.yml              # Scrape configs for Solana metrics
-│   ├── alerting/
-│   │   └── solana-alerts.yml        # Production alert rules (12 alerts)
-│   └── grafana/
-│       ├── dashboards/
-│       │   └── solana-overview.json  # Importable Grafana dashboard (8 panels)
-│       └── provisioning/
-│           ├── dashboards/dashboards.yml
-│           └── datasources/prometheus.yml
-├── examples/                       # Working TypeScript examples
-│   ├── rpc-health-monitor.ts       # Full RPC monitor with Prometheus export
-│   └── security-monitor.ts         # Security monitoring with webhook alerts
-├── scripts/
-│   └── smoke-test.sh               # Automated verification (20+ checks)
-├── package.json                    # npm project with all dependencies
-├── tsconfig.json                   # TypeScript strict mode config
-├── CLAUDE.md                       # Claude Code configuration + routing
-├── LICENSE                         # MIT
-├── README.md                       # This file
-└── install.sh                      # One-command installer
+â”œâ”€â”€ skill/
+â”‚   â”œâ”€â”€ SKILL.md                    # Entry point â€” progressive routing (12 files)
+â”‚   â”œâ”€â”€ rpc-monitoring.md           # Multi-provider health + circuit breakers
+â”‚   â”œâ”€â”€ geyser-streaming.md         # Yellowstone gRPC + failover manager
+â”‚   â”œâ”€â”€ transaction-metrics.md      # Landing rate, MEV, Jito bundles
+â”‚   â”œâ”€â”€ validator-monitoring.md     # Vote latency, skip rate, delinquency
+â”‚   â”œâ”€â”€ security-monitoring.md      # Exploit detection, drain alerts, flash loans
+â”‚   â”œâ”€â”€ alerting-slo.md             # Multi-window burn rates, PagerDuty/Slack
+â”‚   â”œâ”€â”€ program-instrumentation.md  # CU profiling, Anchor events, Geyser plugin (Rust)
+â”‚   â”œâ”€â”€ dashboards.md               # Grafana + Terraform + Docker Compose
+â”‚   â”œâ”€â”€ distributed-tracing.md      # Full OTel pipeline, pino structured logging
+â”‚   â”œâ”€â”€ cost-optimization.md        # CU profiler, dynamic priority fees, simulation
+â”‚   â”œâ”€â”€ chaos-testing.md            # Resilience framework, CI/CD, failure injection
+â”‚   â””â”€â”€ resources.md                # SDK reference + tool links + provider comparison
+â”œâ”€â”€ agents/
+â”‚   â”œâ”€â”€ observability-architect.md  # Designs full monitoring stacks by team size
+â”‚   â”œâ”€â”€ incident-responder.md       # 4-phase incident protocol with solana CLI
+â”‚   â””â”€â”€ metrics-engineer.md         # Implements metrics, histograms, PromQL
+â”œâ”€â”€ commands/
+â”‚   â”œâ”€â”€ health-check.md             # /obs-health-check â€” structured health report
+â”‚   â”œâ”€â”€ dashboard-gen.md            # /obs-dashboard-gen â€” Grafana JSON from program ID
+â”‚   â””â”€â”€ alert-audit.md              # /obs-alert-audit â€” coverage gaps + noise analysis
+â”œâ”€â”€ rules/
+â”‚   â”œâ”€â”€ metrics-naming.md           # Enforced solana_* naming + label cardinality
+â”‚   â””â”€â”€ observability-patterns.md   # Code generation best practices
+â”œâ”€â”€ deploy/                         # Working deployment stack
+â”‚   â”œâ”€â”€ docker-compose.yml          # Prometheus + Grafana + Exporter
+â”‚   â”œâ”€â”€ prometheus.yml              # Scrape configs for Solana metrics
+â”‚   â”œâ”€â”€ alerting/
+â”‚   â”‚   â””â”€â”€ solana-alerts.yml        # Production alert rules (12 alerts)
+â”‚   â””â”€â”€ grafana/
+â”‚       â”œâ”€â”€ dashboards/
+â”‚       â”‚   â””â”€â”€ solana-overview.json  # Importable Grafana dashboard (8 panels)
+â”‚       â””â”€â”€ provisioning/
+â”‚           â”œâ”€â”€ dashboards/dashboards.yml
+â”‚           â””â”€â”€ datasources/prometheus.yml
+â”œâ”€â”€ examples/                       # Working TypeScript examples
+â”‚   â”œâ”€â”€ rpc-health-monitor.ts       # Full RPC monitor with Prometheus export
+â”‚   â””â”€â”€ security-monitor.ts         # Security monitoring with webhook alerts
+â”œâ”€â”€ scripts/
+â”‚   â””â”€â”€ smoke-test.sh               # Automated verification (20+ checks)
+â”œâ”€â”€ package.json                    # npm project with all dependencies
+â”œâ”€â”€ tsconfig.json                   # TypeScript strict mode config
+â”œâ”€â”€ CLAUDE.md                       # Claude Code configuration + routing
+â”œâ”€â”€ LICENSE                         # MIT
+â”œâ”€â”€ README.md                       # This file
+â””â”€â”€ install.sh                      # One-command installer
 ```
 
 ---
@@ -203,8 +241,8 @@ Once installed, ask your AI agent:
 
 **Incidents:**
 ```
-"/obs-health-check" → Full infrastructure status report
-"My transaction landing rate dropped — help me diagnose"
+"/obs-health-check" â†’ Full infrastructure status report
+"My transaction landing rate dropped â€” help me diagnose"
 ```
 
 **Cost:**
@@ -232,7 +270,7 @@ Once installed, ask your AI agent:
 
 ## Cross-Domain Coverage
 
-| Domain | What’s Monitored |
+| Domain | Whatâ€™s Monitored |
 |--------|-----------------|
 | **DeFi** | Swap failures, pool imbalance, MEV extraction, priority fee waste |
 | **NFT** | Mint failures, metadata propagation, royalty enforcement |
@@ -245,11 +283,11 @@ Once installed, ask your AI agent:
 
 ## Progressive Loading
 
-This skill uses **token-efficient progressive loading** — the AI agent only loads the specific files needed for the current task:
+This skill uses **token-efficient progressive loading** â€” the AI agent only loads the specific files needed for the current task:
 
 ```
 User: "Help me set up RPC monitoring"
-Agent loads: skill/SKILL.md → skill/rpc-monitoring.md (382 lines)
+Agent loads: skill/SKILL.md â†’ skill/rpc-monitoring.md (382 lines)
 NOT loaded: 11 other skill files (3,100+ lines saved)
 ```
 
@@ -259,9 +297,9 @@ The routing table in `SKILL.md` maps tasks to files. This keeps context windows 
 
 ## Workflow Conventions
 
-- **Two-Strike Rule:** If a monitoring approach doesn’t work after two attempts, the agent escalates to `observability-architect` for a full redesign
+- **Two-Strike Rule:** If a monitoring approach doesnâ€™t work after two attempts, the agent escalates to `observability-architect` for a full redesign
 - **Metrics Naming:** All metrics follow `solana_{domain}_{metric}_{unit}` convention (enforced by `rules/metrics-naming.md`)
-- **Label Cardinality:** Never use unbounded values (signatures, addresses) as metric labels — bounded enums only
+- **Label Cardinality:** Never use unbounded values (signatures, addresses) as metric labels â€” bounded enums only
 
 ---
 
@@ -285,7 +323,7 @@ git push origin feat/your-improvement
 
 ## License
 
-[MIT](LICENSE) — free to use, modify, merge, and submodule into any project.
+[MIT](LICENSE) â€” free to use, modify, merge, and submodule into any project.
 
 ---
 
