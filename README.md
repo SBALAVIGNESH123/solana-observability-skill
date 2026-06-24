@@ -189,6 +189,7 @@ solana-observability-skill/
 â”‚           â””â”€â”€ datasources/prometheus.yml
 â”œâ”€â”€ examples/                       # Working TypeScript examples
 â”‚   â”œâ”€â”€ rpc-health-monitor.ts       # Full RPC monitor with Prometheus export
+â”‚   â”œâ”€â”€ geyser-stream-monitor.ts    # Geyser gRPC streaming with backpressure
 â”‚   â””â”€â”€ security-monitor.ts         # Security monitoring with webhook alerts
 â”œâ”€â”€ scripts/
 â”‚   â””â”€â”€ smoke-test.sh               # Automated verification (20+ checks)

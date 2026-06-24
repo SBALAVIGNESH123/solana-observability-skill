@@ -55,9 +55,11 @@ services:
     container_name: solana-exporter
     working_dir: /app
     volumes:
-      - ../examples:/app
+      - ../examples:/app/examples
+      - ../package.json:/app/package.json:ro
+      - ../tsconfig.json:/app/tsconfig.json:ro
       - node-modules:/app/node_modules
-    command: sh -c "npm install --prefix /app 2>/dev/null; npx tsx /app/rpc-health-monitor.ts"
+    command: sh -c "cd /app && npm install --ignore-scripts 2>/dev/null; npx tsx /app/examples/rpc-health-monitor.ts"
     environment:
       - SOLANA_RPC_ENDPOINTS=https://api.mainnet-beta.solana.com
       - METRICS_PORT=9100

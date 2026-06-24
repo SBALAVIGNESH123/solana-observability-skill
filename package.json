@@ -7,6 +7,7 @@
     "build": "tsc",
     "start:exporter": "tsx examples/rpc-health-monitor.ts",
     "start:security": "tsx examples/security-monitor.ts",
+    "start:geyser": "tsx examples/geyser-stream-monitor.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint examples/ --ext .ts",

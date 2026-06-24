@@ -180,16 +180,17 @@ async function main() {
     process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com',
     [
       {
-        programId: new PublicKey('YourProgramId11111111111111111111111111111'),
+        // Example: monitor the SPL Token program for authority changes
+        programId: new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
         authorityType: 'upgrade',
-        expectedAuthority: new PublicKey('YourAuthority1111111111111111111111111111'),
-        label: 'my-defi-program',
+        expectedAuthority: new PublicKey('BPFLoaderUpgradeab1e11111111111111111111111'),
+        label: 'spl-token-program',
       },
     ],
     [
-      process.env.SLACK_WEBHOOK_URL!,
-      process.env.PAGERDUTY_WEBHOOK_URL!,
-    ]
+      process.env.SLACK_WEBHOOK_URL,
+      process.env.PAGERDUTY_WEBHOOK_URL,
+    ].filter(Boolean) as string[]
   );
 
   await monitor.start();

@@ -7,6 +7,7 @@
 
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Counter, Histogram, Gauge, Registry } from 'prom-client';
+import http from 'http';
 
 // --- Configuration ---
 
@@ -168,26 +169,51 @@ export class RPCHealthMonitor {
   }
 }
 
-// --- Usage ---
+// --- Metrics Server + Entry Point ---
+
+const METRICS_PORT = parseInt(process.env.METRICS_PORT || '9100', 10);
+const CHECK_INTERVAL = parseInt(process.env.CHECK_INTERVAL_MS || '15000', 10);
 
 async function main() {
-  const monitor = new RPCHealthMonitor([
-    { url: 'https://api.mainnet-beta.solana.com', weight: 1, region: 'us-east', provider: 'solana' },
-    { url: process.env.HELIUS_RPC!, weight: 3, region: 'us-east', provider: 'helius' },
-    { url: process.env.TRITON_RPC!, weight: 2, region: 'eu-west', provider: 'triton' },
-  ]);
+  const endpoints = (process.env.SOLANA_RPC_ENDPOINTS || 'https://api.mainnet-beta.solana.com')
+    .split(',')
+    .map((url, i) => ({
+      url: url.trim(),
+      weight: 1,
+      region: 'default',
+      provider: new URL(url.trim()).hostname.split('.')[0] || `provider-${i}`,
+    }));
 
-  await monitor.start(5000);
+  const monitor = new RPCHealthMonitor(endpoints);
+  await monitor.start(CHECK_INTERVAL);
 
-  // Use the active (healthy) connection
-  const conn = monitor.getActiveConnection();
-  const slot = await conn.getSlot();
-  console.log(`Current slot: ${slot}`);
+  // Serve /metrics for Prometheus scraping
+  const server = http.createServer(async (req, res) => {
+    if (req.url === '/metrics') {
+      res.setHeader('Content-Type', registry.contentType);
+      res.end(await registry.metrics());
+    } else if (req.url === '/health') {
+      const summary = monitor.getHealthSummary();
+      const anyHealthy = Object.values(summary).some((s) => s.healthy);
+      res.writeHead(anyHealthy ? 200 : 503);
+      res.end(JSON.stringify(summary, null, 2));
+    } else {
+      res.writeHead(404);
+      res.end('Not Found');
+    }
+  });
 
-  // Expose metrics at /metrics for Prometheus scraping
-  // (integrate with your HTTP server)
-  const metrics = await registry.metrics();
-  console.log(metrics);
+  server.listen(METRICS_PORT, () => {
+    console.log(`[RPC Health Monitor] Metrics server on :${METRICS_PORT}/metrics`);
+    console.log(`[RPC Health Monitor] Monitoring ${endpoints.length} endpoint(s) every ${CHECK_INTERVAL}ms`);
+  });
+
+  process.on('SIGTERM', () => {
+    monitor.stop();
+    server.close();
+    process.exit(0);
+  });
 }
 
 main().catch(console.error);
+
