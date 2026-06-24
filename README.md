@@ -109,40 +109,25 @@ bash scripts/smoke-test.sh --deploy --cleanup
 
 ---
 
-## Demo - Running Locally
-
-> Screenshots from a real local deployment (Docker Desktop, Windows 11).
-
-### Grafana Dashboard - Auto-Provisioned
-
-![Grafana Dashboard](docs/images/grafana-dashboard.png)
-
-*8 panels auto-provisioned: RPC Health Status, Transaction Landing Rate, Circuit Breaker State, Security Alerts, RPC Request Latency (p95), Transactions Sent vs Landed, Validator Skip Rate, SLO Error Budget Remaining. Panels show 'No data' because no live Solana RPC is connected - the infrastructure itself is fully operational.*
-
-### Grafana Login - Service Running
-
-![Grafana Login](docs/images/grafana-login.png)
-
-*Grafana accessible at localhost:3000 - auto-configured with Prometheus datasource and dashboard provisioning.*
-
----
-
-
----
-
 ## Deployment Proof
 
-The deploy stack runs locally with docker compose up -d:
+The deploy stack runs locally with `docker compose up -d`:
 
 ### Grafana Dashboard (8 panels auto-provisioned)
 
 ![Grafana Dashboard](docs/images/grafana-dashboard.png)
 
+*All 8 panels load automatically: RPC Health, Transaction Landing Rate, Circuit Breaker, Security Alerts, RPC Latency (p95), Transactions Sent vs Landed, Validator Skip Rate, SLO Error Budget.*
+
 ### Prometheus Metrics Engine
 
 ![Prometheus UI](docs/images/prometheus-ui.png)
 
-> Both services start in under 10 seconds. Grafana auto-provisions the Solana Overview dashboard with 8 panels. Prometheus loads 12 alert rules across 5 groups.
+*Prometheus running at localhost:9090 with all scrape configs and 12 alert rules loaded.*
+
+> Both services start in under 10 seconds. No data shown because no live Solana RPC is connected - the infrastructure itself is fully operational and ready for production use.
+
+---
 
 ## Install (AI Kit Skill)
 
