@@ -1,4 +1,11 @@
 # Language detection for GitHub Linguist
-*.ts linguist-detectable=true
-*.sh linguist-detectable=false
+# Show TypeScript as the primary language, not Markdown
 *.md linguist-documentation=true
+*.ts linguist-detectable=true
+*.yml linguist-detectable=false
+*.json linguist-detectable=false
+*.sh linguist-detectable=false
+skill/*.md linguist-documentation=true
+agents/*.md linguist-documentation=true
+commands/*.md linguist-documentation=true
+rules/*.md linguist-documentation=true
