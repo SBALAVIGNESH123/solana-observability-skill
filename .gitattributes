@@ -1,0 +1,6 @@
+﻿# Language detection overrides for GitHub
+# Ensure TypeScript examples are counted in language stats
+*.ts linguist-detectable=true
+*.md linguist-documentation=true
+install.sh linguist-detectable=false
+install-custom.sh linguist-detectable=false
